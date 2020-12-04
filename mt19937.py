@@ -1,4 +1,23 @@
 #!/usr/bin/env python3
+#
+# mt19937.py - a quick and dirty implementation of the MT19937 PRNG in Python
+#
+#    Copyright (C) 2020  Tom Liston - email: tom.liston@bad-wolf-sec.com
+#                                   - twitter: @tliston
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see [http://www.gnu.org/licenses/].
+
 import random
 
 # this is simply a python implementation of a standard Mersenne Twister PRNG.
@@ -6,6 +25,7 @@ import random
 # Mersenne prime 2^19937−1
 # see https://en.wikipedia.org/wiki/Mersenne_Twister for a very good explanation
 # of the math behind this...
+
 class mt19937():
     u, d = 11, 0xFFFFFFFF
     s, b = 7, 0x9D2C5680
@@ -64,8 +84,8 @@ class mt19937():
 # and therefore, we can "clone" the state of the PRNG from "n"
 # generated random numbers...
 #
-# figuring out the math to do this made my brain hurt.
-#
+# initially, figuring out the math to do this made my brain hurt.
+# simplifying it caused even more pain.
 # please don't ask me to explain it...
 def untemper(y):
     y ^= y >> mt19937.l
@@ -83,7 +103,8 @@ if __name__ == "__main__":
     # fire up Python's built-in PRNG and seed it with the time...
     print("Seeding Python's built-in PRNG with the time...")
     random.seed()
-    # generate a random number of random numbers using Python's built-in PRNG
+    # generate some random numbers so we can create a random number of random numbers using Python's built-in PRNG
+    # so random...
     count1 = random.randint(2000, 10000)
     count2 = random.randint(2000, 10000)
     print("Generating a random number (%i) of random numbers using Python's built-in PRNG..." % (count1))
@@ -97,6 +118,7 @@ if __name__ == "__main__":
     # check to make sure our cloning worked...
     print("Generating a random number (%i) of additional random numbers using Python's built-in PRNG..." % (count2))
     print("Generating those %i random numbers with our clone as well..." % (count2))
+    # generate numbers and throw 'em away...
     for i in range(count2):
         f = random.randrange(0xFFFFFFFF)
         f2 = myprng.extract_number()
